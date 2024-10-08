@@ -21,7 +21,8 @@ function main_menu() {
         echo "请选择要执行的操作:"
         echo "1) 启动节点"
         echo "2) 查看日志"
-        echo "3) 退出"
+        echo "3) 删除节点"
+        echo "4) 退出"
         
         read -p "请输入选择的数字: " choice
         
@@ -31,6 +32,9 @@ function main_menu() {
                 ;;
             2)
                 view_logs
+                ;;
+            3)
+                delete_node
                 ;;
             3)
                 echo "退出脚本。"
@@ -163,12 +167,26 @@ EOL
     docker-compose up -d
     echo "Docker Compose 启动完成！"
     echo "所有操作完成！请重新登录以应用组更改。"
+
+    read -p "按任意键返回主菜单..."
 }
 
 # 查看日志的函数
 function view_logs() {
     echo "正在查看 Docker Compose 日志..."
     docker-compose logs -fn 100
+    read -p "按任意键返回主菜单..."
+}
+
+# 删除节点的函数
+function delete_node() {
+    echo "正在进入 /root/sixgpt 目录..."
+    cd /root/sixgpt || { echo "目录不存在！"; return; }
+
+    echo "正在停止所有 Docker Compose 服务..."
+    docker-compose down
+    echo "所有 Docker Compose 服务已停止！"
+    
     read -p "按任意键返回主菜单..."
 }
 
