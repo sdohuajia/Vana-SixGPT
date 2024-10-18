@@ -114,7 +114,7 @@ function start_node() {
     export VANA_PRIVATE_KEY=$PRIVATE_KEY
 
     # 选择网络
-    echo "请选择网络 (输入数字 1 或 2):"
+    echo "请选择网络-哪个都一样 (输入数字 1 或 2):"
     echo "1) satori"
     echo "2) moksha"
     read -p "请输入选择的数字: " NETWORK_CHOICE
