@@ -141,7 +141,7 @@ services:
       - "11439:11434"
     volumes:
       - ollama:/root/.ollama
-    restart: unless-stopped
+    restart: "unless-stopped"
  
   sixgpt3:
     image: sixgpt/miner:latest
@@ -153,7 +153,7 @@ services:
       - VANA_PRIVATE_KEY=${VANA_PRIVATE_KEY}
       - VANA_NETWORK=${VANA_NETWORK}
       - OLLAMA_API_URL=http://ollama:11434/api
-    restart: no
+    restart: "no"
 
 volumes:
   ollama:
