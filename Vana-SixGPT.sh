@@ -142,12 +142,12 @@ services:
   ollama:
     image: ollama/ollama:0.3.12
     ports:
-      - "11435:11434"
+      - "11439:11434"
     volumes:
       - ollama:/root/.ollama
     restart: unless-stopped
  
-  sixgpt3-satori:
+  sixgpt3:
     image: sixgpt/miner:latest
     ports:
       - "3015:3000"
@@ -155,20 +155,10 @@ services:
       - ollama
     environment:
       - VANA_PRIVATE_KEY=${VANA_PRIVATE_KEY}
-      - VANA_NETWORK=satori
-    restart: always
+      - VANA_NETWORK=${VANA_NETWORK}
+      - OLLAMA_API_URL=http://ollama:11434/api
+    restart: no
 
-  sixgpt3-moksha:
-    image: sixgpt/miner:latest
-    ports:
-      - "3016:3000"
-    depends_on:
-      - ollama
-    environment:
-      - VANA_PRIVATE_KEY=${VANA_PRIVATE_KEY}
-      - VANA_NETWORK=moksha
-    restart: always
-    
 volumes:
   ollama:
 EOL
