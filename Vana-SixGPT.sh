@@ -171,7 +171,7 @@ EOL
 # 查看日志的函数
 function view_logs() {
     echo "正在查看 Docker Compose 日志..."
-    docker logs -f sixgpt-ollama-1
+    docker logs -f sixgpt_ollama_1
     read -p "按任意键返回主菜单..."
 }
 
