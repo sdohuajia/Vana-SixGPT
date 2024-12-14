@@ -168,10 +168,17 @@ EOL
     read -p "按任意键返回主菜单..."
 }
 
-# 查看日志的函数
 function view_logs() {
     echo "正在查看 Docker Compose 日志..."
-    docker logs -f sixgpt-ollama-1
+    # 尝试第一个容器名称格式
+    if docker ps --format '{{.Names}}' | grep -q "sixgpt-ollama-1"; then
+        docker logs -f sixgpt-ollama-1
+    # 尝试第二个容器名称格式
+    elif docker ps --format '{{.Names}}' | grep -q "sixgpt_ollama_1"; then
+        docker logs -f sixgpt_ollama_1
+    else
+        echo "未找到匹配的容器名称"
+    fi
     read -p "按任意键返回主菜单..."
 }
 
