@@ -36,7 +36,7 @@ function main_menu() {
             3)
                 delete_node
                 ;;
-            3)
+            4)
                 echo "退出脚本。"
                 exit 0
                 ;;
@@ -130,10 +130,10 @@ function start_node() {
 
     # 创建 .env 文件并设置环境变量
     cat <<EOL > .env
-    VANA_PRIVATE_KEY=$PRIVATE_KEY
-    VANA_NETWORK=$NETWORK
-    OLLAMA_API_URL=http://ollama:11434/api
-    EOL
+VANA_PRIVATE_KEY=$PRIVATE_KEY
+VANA_NETWORK=$NETWORK
+OLLAMA_API_URL=http://ollama:11434/api
+EOL
 
     echo ".env 文件已创建，内容如下："
     cat .env
