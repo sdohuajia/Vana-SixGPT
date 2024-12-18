@@ -120,7 +120,7 @@ services:
   ollama:
     image: ollama/ollama:0.3.12
     ports:
-      - "11439:11434"
+      - "12222:11434"
     volumes:
       - ollama:/root/.ollama
     restart: unless-stopped
