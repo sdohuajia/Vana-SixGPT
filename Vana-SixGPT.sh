@@ -105,66 +105,46 @@ function start_node() {
     echo "正在将用户 $USER 添加到 Docker 组..."
     sudo usermod -aG docker $USER
 
-    # 创建目录并设置环境变量
-    mkdir -p ~/sixgpt
-    cd ~/sixgpt
+    # 克隆 sixgpt/miner 仓库
+    git clone https://github.com/sixgpt/miner.git
+    cd miner
 
-    # 提示用户输入私钥和选择网络
+    # 提示用户输入私钥
     read -p "请输入您的私钥 (your_private_key): " PRIVATE_KEY
-    export VANA_PRIVATE_KEY=$PRIVATE_KEY
 
-    # 选择网络
-    echo "请选择网络(输入数字 1 ):"
+    # 提示用户选择网络
+    echo "请选择网络 (输入数字 1 ):"
     echo "1) moksha"
     read -p "请输入选择的数字: " NETWORK_CHOICE
 
+    # 根据用户选择设置网络
     case $NETWORK_CHOICE in
-        1)
-            export VANA_NETWORK="moksha"
-            ;;
-        *)
-            echo "无效选择，默认选择 moksha。"
-            export VANA_NETWORK="moksha"
-            ;;
+    1)
+        NETWORK="moksha"
+        ;;
+    *)
+        echo "无效选择，默认选择 moksha。"
+        NETWORK="moksha"
+        ;;
     esac
 
-    echo "已选择网络: $VANA_NETWORK"
+    # 创建 .env 文件并设置环境变量
+    cat <<EOL > .env
+    VANA_PRIVATE_KEY=$PRIVATE_KEY
+    VANA_NETWORK=$NETWORK
+    OLLAMA_API_URL=http://ollama:11434/api
+    EOL
 
-    # 创建 docker-compose.yml 文件
-    cat <<EOL > docker-compose.yml
-version: '3.8'
-
-services:
-  ollama:
-    image: ollama/ollama:0.3.12
-    ports:
-      - "11439:11434"
-    volumes:
-      - ollama:/root/.ollama
-    restart: "unless-stopped"
- 
-  sixgpt3:
-    image: sixgpt/miner:latest
-    ports:
-      - "3080:3000"
-    depends_on:
-      - ollama
-    environment:
-      - VANA_PRIVATE_KEY=${VANA_PRIVATE_KEY}
-      - VANA_NETWORK=${VANA_NETWORK}
-      - OLLAMA_API_URL=http://ollama:11434/api
-    restart: "no"
-
-volumes:
-  ollama:
-EOL
+    echo ".env 文件已创建，内容如下："
+    cat .env
 
     # 启动 Docker Compose
     echo "正在启动 Docker Compose..."
     docker-compose up -d
     echo "Docker Compose 启动完成！"
-    echo "所有操作完成！请重新登录以应用组更改。"
 
+    # 提示用户操作完成
+    echo "所有操作完成！请重新登录以应用组更改。"
     read -p "按任意键返回主菜单..."
 }
 
