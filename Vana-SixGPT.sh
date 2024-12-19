@@ -110,7 +110,7 @@ function start_node() {
 
     read -p "请输入你的 VANA 私钥: " vana_private_key
     export VANA_PRIVATE_KEY=$vana_private_key
-    export VANA_NETWORK="moksha"  # 默认设置网络为 moksha
+    export VANA_NETWORK="mainnet"  # 默认设置网络为 mainnet
 
     # 生成最新的 docker-compose.yml 文件
     cat <<EOL >docker-compose.yml
@@ -124,6 +124,11 @@ services:
     volumes:
       - ollama:/root/.ollama
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
  
   sixgpt3:
     image: sixgpt/miner:latest
@@ -135,7 +140,12 @@ services:
       - VANA_PRIVATE_KEY=\${VANA_PRIVATE_KEY}
       - VANA_NETWORK=\${VANA_NETWORK}
       - OLLAMA_API_URL=http://ollama:11434/api
-    restart: no
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   ollama:
